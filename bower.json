@@ -1,0 +1,25 @@
+{
+  "name": "name",
+  "version": "0.0.0",
+  "authors": [
+    "Alexey Kudryashov <kudryashov@steelkiwi.com>"
+  ],
+  "description": "A grid system for humans.",
+  "main": [
+    "scss/jeet/index.scss"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize.css": "*",
+    "jquery": "2.*"
+  },
+  "moduleType": [],
+  "homepage": ""
+}
