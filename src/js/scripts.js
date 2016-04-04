@@ -106,6 +106,27 @@
 
 // ko.applyBindings(new FoldersModel(data));
 
+$(function() {
+
+  var $contextMenu = $("#contextMenu");
+
+  $("body").on("contextmenu", ".window", function(e) {
+    $contextMenu.css({
+      display: "block",
+      left: e.pageX,
+      top: e.pageY
+    });
+    return false;
+  });
+
+  $("body").on("click", function() {
+     $contextMenu.hide();
+  });
+
+  $(".window").resizable({});
+
+});
+
 var FoldersModel = function () {
     var self = this;
 
@@ -115,6 +136,10 @@ var FoldersModel = function () {
     self.openmenu = ko.observable("");
     self.opensubmenu = ko.observable("");
     self.home = ko.observable("");
+    self.num = ko.observable(0);
+    self.num2 = ko.observable(0);
+    self.sum = ko.observable("");
+
 
     self.fils = ko.observableArray([
         {name: "folder1", type: 1, files:[{name: "File 1", type: 2 },{ name: "File 2", type: 2 }]},
@@ -128,6 +153,8 @@ var FoldersModel = function () {
             {name: "File 9", type: 2 },{ name: "File 10", type: 2 }]}
      ]);
 
+    // console.log(self.fils().length);
+
     self.allItems = ko.observableArray('');
 
     self.homeReset = function() {
@@ -139,23 +166,55 @@ var FoldersModel = function () {
 
 
     self.openFolder = function(task) {
-       for(var i in self.fils()){
+
+        for(var i in self.fils()){
             if(self.fils()[i].name == task.name){
                 self.allItems(self.fils()[i].files);
                 self.openmenu(task.name);
                 self.home(1);
                 self.opensubmenu('');
                 self.flag(true);
+
+                var sum = self.allItems().length;
+                console.log(self.allItems());
+                if (sum) {
+                    if (self.allItems()[sum-1].num) {
+                        if (self.allItems()[sum-1].type == 1) {
+                            if (self.num() !== 0) {
+                                self.num((self.allItems()[sum-1].num) + 1);
+                            }
+                        }
+                    } else {
+                        self.num(0);
+                    }
+                }
+
+
+
             }
-           for(var j in self.fils()[i].files){
+            for(var j in self.fils()[i].files){
                 if(self.fils()[i].files[j].name == task.name){
                     self.allItems(self.fils()[i].files[j].files);
                     self.opensubmenu(task.name);
                     self.flag(true);
                 }
-           }
-       }
+            }
+        }
+        // if(self.num() == 0) {
+        //    self.num(0);
+        // }
+        // else if (self.num()>0) {
+        //    var sum = self.allItems()[self.allItems().length -1].num;
+        //    return self.num(sum);
+        // }
+        // else {
+        //    console.log("no");
+        //    self.num(0);
+        // }
     };
+
+    self.editing = ko.observable(true);
+    self.edit = function() {this.editing(true);};
 
     self.addfile = function () {
         if (self.home() == '') {
@@ -167,6 +226,29 @@ var FoldersModel = function () {
             }
         }
     };
+
+    var file = function(name) {
+        var option = {name: name};
+        return option;
+    };
+    var num = 0;
+    self.addItemFold = function(task) {
+        // console.log(self.num());
+        if (self.home() == '') {
+            self.fils.push({ name: new file('New Folder(').name+self.num() +")", type: 1, files: [], num: self.num()});
+        }
+        else {
+            self.allItems.push({ name: new file('New Folder(').name+self.num() +")", type: 1, files: [], num: self.num()});
+        }
+        num = num + 1;
+        self.num(num);
+    }
+    self.addItemDoc = function(task) {
+        self.allItems.push({ name: file('New Doc(').name+self.num2() +")", type: 2 , num: self.num()});
+        num = num + 1;
+        self.num2(num);
+    }
+
 
     // ko.bindingHandlers.singleClick= {
 
@@ -188,10 +270,20 @@ var FoldersModel = function () {
     //         });
     //     }
     // };
+    // function setposition(e) {
+    //     var bodyOffsets = document.body.getBoundingClientRect();
+    //     tempX = e.pageX - bodyOffsets.left;
+    //     tempY = e.pageY;
+    //     console.log($(this));
+    //     $(".dropdown-menu").css({ 'top': tempY, 'left': tempX });
+    // }
 
-    // self.double = function () {
-    //     console.log("333");
-    // };
+    // $('.folder-list a').mousedown(function(event) {
+    //         console.log("444");
+    //     if(event.which == 3){
+    //         // setposition(event);
+    //     }
+    // });
 
 
 };

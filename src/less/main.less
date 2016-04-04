@@ -27,9 +27,7 @@ a:active, a:hover, a:focus {
     border-radius: 10px;
     border: 1px solid #aaa;
     min-height: 300px;
-    max-width: 70%;
     position: relative;
-    min-width: 300px;
 }
 .wrapp-form {
     max-width: 70%;
@@ -61,7 +59,7 @@ header.row {
     padding: 25px 0 0 0;
     position: absolute;
     top: 10px;
-    width: 140px;
+    width: 180px;
     li {
         font-size: 16px;
         ul {
@@ -87,8 +85,9 @@ header.row {
 }
 .main {
     min-width: 200px;
-    margin-top: 10px;
-    margin-left: 120px;
+    margin-top: 20px;
+    margin-left: 180px;
+    width: auto;
     a:hover {
         color: #000;
         text-decoration: none;
@@ -100,12 +99,15 @@ header.row {
 .folder-list {
     list-style: none;
     padding-left: 0;
-    li {
+    & > li {
         font-size: 13px;
         float: left;
         padding: 14px 20px 0;
         text-align: center;
         max-width: 120px;
+        height: 100px;
+        width: 100px;
+        display: table;
     }
     .glyphicon {
         font-size: 24px;
@@ -122,5 +124,16 @@ header.row {
         padding: 0 2px;
     }
 }
-
+#contextMenu {
+    position: absolute;
+    display:none;
+    .dropdown-menu {
+        display:block;
+        position:static;
+        margin-bottom:5px;
+    }
+}
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    background-color: #BDBDBD;
+}
 @import "media.less";
